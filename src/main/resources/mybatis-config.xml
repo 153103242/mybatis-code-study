@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <properties resource="jdbc.properties"/>
+    <settings>
+        <!--开启全局的懒加载-->
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <!--&lt;!&ndash;关闭立即加载，其实不用配置，默认为false&ndash;&gt;-->
+        <!--<setting name="aggressiveLazyLoading" value="false"/>-->
+        <!--开启Mybatis的sql执行相关信息打印-->
+        <setting name="logImpl" value="STDOUT_LOGGING" />
+        <!--默认是开启的，为了加强记忆，还是手动加上这个配置-->
+        <setting name="cacheEnabled" value="true" />
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <!--缓存的作用域是STATEMENT,直接关闭一级缓存-->
+        <setting name="localCacheScope" value="STATEMENT"/>
+    </settings>
+    <!-- 环境配置：事务管理器和数据源配置 -->
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC" />
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver}" />
+                <property name="url" value="${jdbc.url}" />
+                <property name="username" value="${jdbc.username}" />
+                <property name="password" value="${jdbc.password}" />
+            </dataSource>
+        </environment>
+    </environments>
+    <!-- 映射器 -->
+    <mappers>
+        <mapper resource="mapper/SutdentMapper.xml" />
+    </mappers>
+</configuration>
