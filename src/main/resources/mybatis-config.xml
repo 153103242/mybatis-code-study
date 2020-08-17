@@ -13,9 +13,9 @@
         <setting name="logImpl" value="STDOUT_LOGGING" />
         <!--默认是开启的，为了加强记忆，还是手动加上这个配置-->
         <setting name="cacheEnabled" value="true" />
-        <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <!--<setting name="mapUnderscoreToCamelCase" value="true"/>-->
         <!--缓存的作用域是STATEMENT,直接关闭一级缓存-->
-        <setting name="localCacheScope" value="STATEMENT"/>
+        <!--<setting name="localCacheScope" value="STATEMENT"/>-->
     </settings>
     <!-- 环境配置：事务管理器和数据源配置 -->
     <environments default="development">

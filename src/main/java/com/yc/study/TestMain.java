@@ -3,6 +3,7 @@ package com.yc.study;
 import com.yc.study.entity.Student;
 import com.yc.study.mapper.StudentMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.cache.Cache;
 import org.apache.ibatis.executor.*;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.mapping.MappedStatement;
@@ -230,9 +231,12 @@ public class TestMain {
     @Test
     public void testFirstCacheAction(){
 
-        SqlSession sqlSession = sessionFactory.openSession(false);
+        SqlSession sqlSession = sessionFactory.openSession(true);
         StudentMapper mapper = sqlSession.getMapper(StudentMapper.class);//动态代理
         Student student = mapper.getStudentById(1);
+
+        sqlSession.commit();
+
         //其他条件相同，中间清除缓存----------》未命中
         // sqlSession.clearCache();
         //其他条件相同，手动提交----------》未命中
@@ -278,6 +282,19 @@ public class TestMain {
         System.out.println(student==student2);
         //提交事务
         transactionManager.commit(status);
+    }
+
+    /**
+     * Cache的责任链
+     */
+    @Test
+    public void testDutyLine(){
+        Cache cache = configuration.getMappedStatement("com.yc.study.mapper.StudentMapper.getStudentById").getCache();
+        Student student = new Student();
+        cache.putObject("66666",student);
+        Student s = (Student) cache.getObject("666666");
+        System.out.println(s);
+
     }
 
 
