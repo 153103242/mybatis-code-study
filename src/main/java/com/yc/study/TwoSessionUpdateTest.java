@@ -1,13 +1,7 @@
 package com.yc.study;
 
-import org.apache.ibatis.io.Resources;
-import org.apache.ibatis.session.Configuration;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import com.yc.study.util.ConnectUtil4TwoSessionUpdateTest;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -21,11 +15,11 @@ import java.sql.SQLException;
  * @date 2020/8/15 13:36:13
  * @description
  */
-public class TestMain2 {
+public class TwoSessionUpdateTest {
 
     static {
         try {
-            ConnectUtil.getConnection();
+            ConnectUtil4TwoSessionUpdateTest.getConnection();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -51,17 +45,17 @@ public class TestMain2 {
                 e.printStackTrace();
             }
             //2.插入记录
-            ConnectUtil.insert(555, "小帅哥YC1111");
+            ConnectUtil4TwoSessionUpdateTest.insert(555, "小帅哥YC1111");
         });
 
         Thread t2=run(()->{
             try {
-                Connection connection = ConnectUtil.getConnection();
+                Connection connection = ConnectUtil4TwoSessionUpdateTest.getConnection();
                 //如果不是同一个事务，就能查询到结果,即自动提交为true
                 //如果是同一个事务，就看不到其他事务的结果，即自动提交为false
                 connection.setAutoCommit(false);
                 //1.第一次读取
-                ConnectUtil.select("小帅哥YC1111",connection);
+                ConnectUtil4TwoSessionUpdateTest.select("小帅哥YC1111",connection);
 
                 //释放锁
                 synchronized (lock){
@@ -70,7 +64,7 @@ public class TestMain2 {
                 Thread.sleep(500);
 
                 //3.第二次读取
-                ConnectUtil.select("小帅哥YC1111",connection);
+                ConnectUtil4TwoSessionUpdateTest.select("小帅哥YC1111",connection);
 
 
                 connection.close();

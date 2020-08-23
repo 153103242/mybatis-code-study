@@ -1,4 +1,4 @@
-package com.yc.study;
+package com.yc.study.util;
 
 import com.yc.study.entity.Student;
 import org.apache.ibatis.io.Resources;
@@ -19,7 +19,7 @@ import java.util.Map;
  * @date 2020/8/15 13:42:19
  * @description
  */
-public class ConnectUtil {
+public class ConnectUtil4TwoSessionUpdateTest {
 
     private static SqlSessionFactory sessionFactory;
     private static SqlSession sqlSession;

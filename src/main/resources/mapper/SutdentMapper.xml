@@ -6,9 +6,5 @@
 <!--- 命名空间 namespace -->
 <mapper namespace="com.yc.study.mapper.StudentMapper">
     <!--开启二级缓存-->
-    <cache/>
-    <select id="getStudentById" resultType="com.yc.study.entity.Student">
-        select * from t_student where id=#{id}
-    </select>
-
+    <!--<cache/>-->
 </mapper>
