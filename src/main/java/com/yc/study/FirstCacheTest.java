@@ -5,6 +5,7 @@ import com.yc.study.mapper.StudentMapper;
 import org.apache.ibatis.session.*;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.util.List;
 
@@ -51,7 +52,7 @@ public class FirstCacheTest {
 
     /**
      * 命中一级缓存的条件(操作和配置)：
-     * 1.不手动清空一级缓存
+     * 1.不手动清空一级缓存(提交、回滚、手动清空)
      * 2.未执行更新操作，更新操作为了保证数据一致性，也会清空一级缓存
      * 3.未调用flushCache=true的查询
      * 4.缓存作用域不是STATEMENT--->子查询一级缓存依旧有用
@@ -66,5 +67,21 @@ public class FirstCacheTest {
         // mapper.setName(1,"hhh");//更新操作为了保证数据一致性，需要清空缓存
         Student studentById1 = mapper.getStudentById(1);
         System.out.println(studentById==studentById1);
+    }
+
+    /**
+     * 测试一级缓存在Spring环境下失效
+     */
+    @Test
+    public void testCacheSpring(){
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring-dao.xml");
+        StudentMapper mapper = context.getBean(StudentMapper.class);
+        Student studentById1 = mapper.getStudentById(1);
+        Student studentById2 = mapper.getStudentById(1);
+
+        System.out.println(studentById1==studentById2);
+
+
+
     }
 }

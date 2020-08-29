@@ -6,5 +6,17 @@
 <!--- 命名空间 namespace -->
 <mapper namespace="com.yc.study.mapper.StudentMapper">
     <!--开启二级缓存-->
+    <!--无法与mapper接口的@CacheNamespace公用-->
     <!--<cache/>-->
+    <!--引用mapper的缓存-->
+    <!--<cache-ref namespace="com.yc.study.mapper.StudentMapper"/>-->
+
+    <select id="getStudentByIdByxml"  resultType="com.yc.study.entity.Student">
+        select * from test.t_student where id=#{id}
+    </select>
+
+    <resultMap id="studentMap" type="com.yc.study.entity.Student" />
+    <select id="getStudentByIdAutoMapping"  resultType="com.yc.study.entity.Student">
+        select * from test.t_student where id=#{id}
+    </select>
 </mapper>

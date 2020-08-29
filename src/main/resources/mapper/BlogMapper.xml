@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yc.study.mapper.BlogMapper">
+
+
+    <resultMap id="blogMap" type="com.yc.study.entity.Blog">
+        <collection property="comments" column="id" select="selectCommentsByBlogId" fetchType="eager"/>
+    </resultMap>
+    <resultMap id="CommentMap" type="com.yc.study.entity.Comment">
+        <association property="blog"  column="blog_id" select="selectBlogByBlogId" fetchType="eager"/>
+    </resultMap>
+    <select id="selectBlogByBlogId" resultMap="blogMap">
+        select *
+        from test.t_blog
+        where id = #{blog_id}
+    </select>
+    <select id="selectCommentsByBlogId" resultMap="CommentMap">
+        select * from test.t_comment where blog_id=#{blog_id}
+    </select>
+
+    <!-- 懒加载 -->
+    <resultMap id="blogMapByLazy" type="com.yc.study.entity.Blog">
+        <id column="id" property="id"/>
+        <collection property="comments" column="id" select="selectCommentsByBlogIdByLazy" fetchType="lazy"/>
+    </resultMap>
+    <select id="selectCommentsByBlogIdByLazy" resultType="com.yc.study.entity.Comment">
+        select * from test.t_comment where blog_id=#{blog_id}
+    </select>
+    <select id="selectBlogByBlogIdByLazy" resultMap="blogMapByLazy">
+        select *
+        from test.t_blog
+        where id = #{blog_id}
+    </select>
+</mapper>
