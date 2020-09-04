@@ -1,9 +1,7 @@
 package com.yc.study.cache;
 
 import com.yc.study.util.EncryptUtil;
-import lombok.Data;
 import org.apache.ibatis.cache.Cache;
-import org.apache.ibatis.cache.CacheException;
 
 import java.io.*;
 import java.nio.file.Files;

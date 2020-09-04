@@ -34,4 +34,17 @@
         from test.t_blog
         where id = #{blog_id}
     </select>
+
+
+
+    <!--联合查询-->
+     <resultMap id="NestedMap" type="com.yc.study.entity.Blog">
+         <id property="id" column="id"/>
+         <collection property="comments" ofType="com.yc.study.entity.Comment" autoMapping="true" columnPrefix="comment_">
+                 <association property="blog" javaType="com.yc.study.entity.Blog" resultMap="NestedMap"/>
+         </collection>
+     </resultMap>
+    <select id="selectBlogByNestedQuery" resultMap="NestedMap">
+        select b.id,b.title,c.id as comment_id ,c.body as comment_body from test.t_blog b left join test.t_comment c  on b.id=c.blog_id where b.id=#{blog_id};
+    </select>
 </mapper>

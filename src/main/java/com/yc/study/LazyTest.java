@@ -2,13 +2,12 @@ package com.yc.study;
 
 import com.yc.study.entity.Blog;
 import com.yc.study.mapper.BlogMapper;
-import com.yc.study.mapper.StudentMapper;
 import org.apache.ibatis.session.*;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.*;
-import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * @author admin
@@ -16,6 +15,9 @@ import java.util.ArrayList;
  * @description
  */
 public class LazyTest {
+
+
+
 
     private static Configuration configuration;
     private static SqlSessionFactory sqlSessionFactory;
@@ -25,12 +27,13 @@ public class LazyTest {
     @Before
     public void init() {
         SqlSessionFactoryBuilder sqlSessionFactoryBuilder = new SqlSessionFactoryBuilder();
-        sqlSessionFactory = sqlSessionFactoryBuilder.build(SecondCacheTest.class.getResourceAsStream("/mybatis-config.xml"));
+        sqlSessionFactory = sqlSessionFactoryBuilder.build(LazyTest.class.getResourceAsStream("/mybatis-config.xml"));
         configuration = sqlSessionFactory.getConfiguration();
+        //取消默认的懒加载的触发方法
+        configuration.setLazyLoadTriggerMethods(new HashSet<>());
         sqlSession = sqlSessionFactory.openSession(ExecutorType.REUSE, true);
         mapper = sqlSession.getMapper(BlogMapper.class);
     }
-
 
     /**
      * 获得懒加载的动态对象后，设置了懒加载的属性
@@ -41,7 +44,11 @@ public class LazyTest {
     @Test
     public void lazySetTest(){
         Blog blog = mapper.selectBlogByBlogIdByLazy(1);
-        // blog.setComments(new ArrayList<>());
+        // Object o = blog.writeReplace();
+        blog.getComments();
+        // System.out.println(blog);
+
+        // blog.setCommentsmnvm                                                                              mx                                           (new ArrayList<>());
         // System.out.println(blog.getComments().size());
     }
 
@@ -61,7 +68,7 @@ public class LazyTest {
         System.out.println("开始反序列化");
         Blog o = (Blog) readObject(bytes);
         System.out.println("反序列化完成");
-        System.out.println(o.getComments().size());
+        o.getComments();
 
 
     }
@@ -71,8 +78,8 @@ public class LazyTest {
         byte[] bytes = writeObject(bean);
         Bean o = (Bean) readObject(bytes);
         System.out.println(o.id);
-        
-        
+
+
     }
 
     public static class Bean implements Serializable{
@@ -96,7 +103,7 @@ public class LazyTest {
             System.out.println(this.id);
             return new Bean(9999,"ss");
         }
-        
+
     }
     public static class ConfigurationFactory{
         public static Configuration getConfiguration(){ return configuration; }

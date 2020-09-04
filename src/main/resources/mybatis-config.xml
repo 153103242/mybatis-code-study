@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
     <properties resource="jdbc.properties"/>
-    <settings>
+    <!--<settings>-->
         <!--开启全局的懒加载-->
         <!--<setting name="lazyLoadingEnabled" value="true"/>-->
         <!--&lt;!&ndash;关闭立即加载，其实不用配置，默认为false&ndash;&gt;-->
@@ -19,23 +19,29 @@
 
 
         <!--配置configuration工厂，反序列化之后依旧可以触发懒加载-->
-        <setting name="configurationFactory" value="com.yc.study.LazyTest$ConfigurationFactory"/>
-    </settings>
+        <!--<setting name="configurationFactory" value="com.yc.study.LazyTest$ConfigurationFactory"/>-->
+    <!--</settings>-->
+    <plugins>
+        <plugin interceptor="com.yc.study.plugin.PageInterceptor"/>
+        <plugin interceptor="com.yc.study.plugin.MonitorInterceptor"/>
+    </plugins>
     <!-- 环境配置：事务管理器和数据源配置 -->
     <environments default="development">
         <environment id="development">
-            <transactionManager type="JDBC" />
+            <transactionManager type="JDBC"/>
             <dataSource type="POOLED">
-                <property name="driver" value="${jdbc.driver}" />
-                <property name="url" value="${jdbc.url}" />
-                <property name="username" value="${jdbc.username}" />
-                <property name="password" value="${jdbc.password}" />
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
             </dataSource>
         </environment>
     </environments>
     <!-- 映射器 -->
     <mappers>
-        <mapper resource="mapper/SutdentMapper.xml" />
-        <mapper resource="mapper/BlogMapper.xml" />
+        <mapper resource="mapper/SutdentMapper.xml"/>
+        <mapper resource="mapper/UserMapper.xml"/>
+        <mapper resource="mapper/BlogMapper.xml"/>
     </mappers>
+
 </configuration>

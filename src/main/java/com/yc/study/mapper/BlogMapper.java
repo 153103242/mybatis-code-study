@@ -2,6 +2,7 @@ package com.yc.study.mapper;
 
 import com.yc.study.entity.Blog;
 import org.apache.ibatis.annotations.CacheNamespace;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 
 /**
@@ -14,4 +15,7 @@ public interface BlogMapper {
 
     Blog selectBlogByBlogId(@Param("blog_id")Integer id);
     Blog selectBlogByBlogIdByLazy(@Param("blog_id")Integer id);
+    Blog selectBlogByNestedQuery(@Param("blog_id")Integer id);
+
+
 }
